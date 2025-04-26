@@ -1,0 +1,66 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 20px;
+    gap: 60px;
+  }
+  #tank {
+    width: 200px;
+    height: 300px;
+    border: 2px solid #000;
+    position: relative;
+    background: linear-gradient(to top, #00f 50%, #fff 50%);
+  }
+  .pump {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .pump svg {
+    width: 100px;
+    height: 100px;
+  }
+  .pump.right svg {
+    transform: scaleX(-1); /* Espelha a bomba da direita */
+  }
+  #ph-value {
+    font-size: 24px;
+    margin-top: 20px;
+  }
+  button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .config {
+    margin: 20px auto;
+    max-width: 400px;
+    text-align: left;
+  }
+  .config label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  .config input {
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+  }
+  .bombaEmFuncionamento {
+    transform-origin: 50% 50%;
+    animation: spin 2s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

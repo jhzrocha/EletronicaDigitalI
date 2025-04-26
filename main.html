@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulador de Tanque de Água - pH</title>
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+
+  <h1>Simulador de pH no Tanque de Água</h1>
+
+  <div class="container">
+    <!-- Bomba Ácida -->
+    <div id="acidPump" class="pump">
+      <div style="text-align: center;">
+        <div style="margin-top: 5px; font-weight: bold;">Bomba Ácida</div>
+        <svg viewBox="0 0 100 100">
+          <rect x="20" y="20" width="60" height="60" rx="10" ry="10" fill="gray" stroke="black" stroke-width="2"/>
+          <rect x="80" y="40" width="15" height="20" rx="4" ry="4" fill="darkgray" stroke="black" stroke-width="2"/>
+          <g class="bombaEmFuncionamento">
+            <g transform="translate(50,50)">
+              <path d="M0,-15 Q7,0 0,15 Q-7,0 0,-15" fill="black" stroke="black" stroke-width="1"/>
+            </g>
+          </g>
+        </svg>
+        
+      </div>
+    </div>
+  
+    <!-- Tanque -->
+    <div id="tank"></div>
+  
+    <!-- Bomba Básica (invertida) -->
+    <div id="basePump" class="pump right">
+      <div style="text-align: center;">
+        <div style="margin-top: 5px; font-weight: bold;">Bomba Básica</div>
+        <svg viewBox="0 0 100 100">
+          <rect x="20" y="20" width="60" height="60" rx="10" ry="10" fill="gray" stroke="black" stroke-width="2"/>
+          <rect x="80" y="40" width="15" height="20" rx="4" ry="4" fill="darkgray" stroke="black" stroke-width="2"/>
+          <g class="bombaEmFuncionamento">
+            <g transform="translate(50,50)">
+              <path d="M0,-15 Q7,0 0,15 Q-7,0 0,-15" fill="black" stroke="black" stroke-width="1"/>
+            </g>
+          </g>
+        </svg>
+        
+      </div>
+    </div>
+  </div>
+  
+
+  <div>
+    <button onclick="addAcid()">Adicionar Ácido</button>
+    <button onclick="addBase()">Adicionar Base</button>
+  </div>
+
+  <div id="ph-value">pH atual: 7.00</div>
+
+  <div class="config">
+    <h2>Configurações</h2>
+
+    <label for="idealPh">pH Ideal:</label>
+    <input type="number" id="idealPh" value="7.0" step="0.01">
+
+    <label for="acidSolutionPh">pH da Solução Ácida:</label>
+    <input type="number" id="acidSolutionPh" value="3.0" step="0.01">
+
+    <label for="baseSolutionPh">pH da Solução Básica:</label>
+    <input type="number" id="baseSolutionPh" value="11.0" step="0.01">
+
+    <label for="acidFlowRate">Vazão da Bomba Ácida (mL/s):</label>
+    <input type="number" id="acidFlowRate" value="5" step="0.1">
+
+    <label for="baseFlowRate">Vazão da Bomba Básica (mL/s):</label>
+    <input type="number" id="baseFlowRate" value="5" step="0.1">
+  </div>
+
+  <script>
+    let ph = 7.0;
+
+    function updateDisplay() {
+        const phText = document.getElementById('ph-value');
+        phText.textContent = `pH atual: ${ph.toFixed(2)}`;
+
+        const tank = document.getElementById('tank');
+        const idealPh = parseFloat(document.getElementById('idealPh').value) || 7.0;
+
+        if (Math.abs(ph - idealPh) < 0.01) {
+            tank.style.background = "linear-gradient(to top, #0f0 50%, #fff 50%)";
+        } else if (ph < 7) {
+            const red = 255;
+            const green = Math.max(0, Math.floor(255 * (ph / 7))); 
+            const blue = Math.max(0, Math.floor(255 * (ph / 7)));  
+            tank.style.background = `linear-gradient(to top, rgb(${red}, ${green}, ${blue}) 50%, #fff 50%)`;
+        } else if (ph > 7) {
+            const blue = 255;
+            const red = Math.min(255, Math.floor(255 * ((ph - 7) / 7))); 
+            const green = 0; 
+            tank.style.background = `linear-gradient(to top, rgb(${red}, ${green}, ${blue}) 50%, #fff 50%)`;
+        } else {
+            tank.style.background = "linear-gradient(to top, #00f 50%, #fff 50%)";
+        }
+    }
+
+    function addAcid() {
+      const acidPh = parseFloat(document.getElementById('acidSolutionPh').value) || 3.0;
+      const acidFlow = parseFloat(document.getElementById('acidFlowRate').value) || 5;
+
+      const influence = (7 - acidPh) * (acidFlow / 100);
+      ph -= influence;
+      if (ph < 0) ph = 0;
+      updateDisplay();
+    }
+
+    function addBase() {
+      const basePh = parseFloat(document.getElementById('baseSolutionPh').value) || 11.0;
+      const baseFlow = parseFloat(document.getElementById('baseFlowRate').value) || 5;
+
+      const influence = (basePh - 7) * (baseFlow / 100);
+      ph += influence;
+      if (ph > 14) ph = 14;
+      updateDisplay();
+    }
+
+    updateDisplay();
+  </script>
+
+</body>
+</html>
