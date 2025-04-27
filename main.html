@@ -2,66 +2,148 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Simulador de Tanque de Água - pH</title>
+  <title>Aquário</title>
   <link rel="stylesheet" href="style.css">
-  
+  <style>
+    /* Apenas organizando melhor */
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    .tank-area {
+      position: relative;
+      width: 200px;
+      height: 300px;
+      margin: 20px 0;
+      background: linear-gradient(to top, #0f0 50%, #fff 50%);
+      border: 3px solid #000;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    #fan {
+      margin-bottom: 10px;
+    }
+    #heater {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 80px;
+    }
+    .pump {
+      margin: 20px;
+    }
+
+    @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .rotating {
+    animation: spin 2s linear infinite;
+    transform-origin: center center;
+  }
+  </style>
 </head>
 <body>
 
-  <h1>Simulador de pH no Tanque de Água</h1>
+  <h1>Aquário</h1>
 
   <div class="container">
-    <!-- Bomba Ácida -->
-    <div id="acidPump" class="pump">
-      <div style="text-align: center;">
-        <div style="margin-top: 5px; font-weight: bold;">Bomba Ácida</div>
-        <svg viewBox="0 0 100 100">
-          <rect x="20" y="20" width="60" height="60" rx="10" ry="10" fill="gray" stroke="black" stroke-width="2"/>
-          <rect x="80" y="40" width="15" height="20" rx="4" ry="4" fill="darkgray" stroke="black" stroke-width="2"/>
-          <g class="bombaEmFuncionamento">
-            <g transform="translate(50,50)">
-              <path d="M0,-15 Q7,0 0,15 Q-7,0 0,-15" fill="black" stroke="black" stroke-width="1"/>
-            </g>
-          </g>
-        </svg>
-        
-      </div>
-    </div>
+
+  <div id="fan" class="pump">
+  <div style="text-align: center;">
+    <div style="margin-bottom: 5px; font-weight: bold;">Ventilador</div>
+    <svg viewBox="0 0 100 100" width="60" height="60">
+      <!-- Corpo do ventilador -->
+      <circle cx="50" cy="50" r="30" fill="lightblue" stroke="black" stroke-width="2"/>
+      
+      <!-- Grupo que vai girar -->
+      <g id="fanBlades" transform="translate(50,50)">
+        <!-- Hélice 1 -->
+        <path d="M0,-20 Q10,-10 0,0 Q-10,-10 0,-20" fill="blue"/>
+        <!-- Hélice 2 (rotacionada 120°) -->
+        <path d="M0,-20 Q10,-10 0,0 Q-10,-10 0,-20" fill="blue" transform="rotate(120)"/>
+        <!-- Hélice 3 (rotacionada 240°) -->
+        <path d="M0,-20 Q10,-10 0,0 Q-10,-10 0,-20" fill="blue" transform="rotate(240)"/>
+      </g>
+    </svg>
+  </div>
+</div>
+
+
+
+<div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
   
-    <!-- Tanque -->
-    <div id="tank"></div>
-  
-    <!-- Bomba Básica (invertida) -->
-    <div id="basePump" class="pump right">
-      <div style="text-align: center;">
-        <div style="margin-top: 5px; font-weight: bold;">Bomba Básica</div>
-        <svg viewBox="0 0 100 100">
-          <rect x="20" y="20" width="60" height="60" rx="10" ry="10" fill="gray" stroke="black" stroke-width="2"/>
-          <rect x="80" y="40" width="15" height="20" rx="4" ry="4" fill="darkgray" stroke="black" stroke-width="2"/>
-          <g class="bombaEmFuncionamento">
-            <g transform="translate(50,50)">
-              <path d="M0,-15 Q7,0 0,15 Q-7,0 0,-15" fill="black" stroke="black" stroke-width="1"/>
-            </g>
+  <!-- Bomba Ácida à esquerda -->
+  <div id="acidPump" class="pump" style="margin-right: 40px;">
+    <div style="text-align: center;">
+      <div style="margin-bottom: 5px; font-weight: bold;">Bomba Ácida</div>
+      <svg viewBox="0 0 100 100" width="60" height="60">
+        <rect x="20" y="20" width="60" height="60" rx="10" ry="10" fill="gray" stroke="black" stroke-width="2"/>
+        <rect x="80" y="40" width="15" height="20" rx="4" ry="4" fill="darkgray" stroke="black" stroke-width="2"/>
+        <g class="bombaEmFuncionamento">
+          <g transform="translate(50,50)">
+            <path d="M0,-15 Q7,0 0,15 Q-7,0 0,-15" fill="black" stroke="black" stroke-width="1"/>
           </g>
-        </svg>
-        
-      </div>
+        </g>
+      </svg>
     </div>
   </div>
-  
+
+  <!-- Tanque no meio -->
+  <div class="tank-area" id="tank">
+    <div id="heater">
+      <svg id="heaterSvg" viewBox="0 0 100 100" width="100" height="100">
+        <rect id="heaterBody" x="30" y="20" width="40" height="60" fill="orange" stroke="black" stroke-width="2"/>
+        <path d="M50 30 Q45 40 50 50 Q55 60 50 70" stroke="red" stroke-width="3" fill="none"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Bomba Básica à direita -->
+  <div id="basePump" class="pump right" style="margin-left: 40px;">
+    <div style="text-align: center;">
+      <div style="margin-bottom: 5px; font-weight: bold;">Bomba Básica</div>
+      <svg viewBox="0 0 100 100" width="60" height="60">
+        <rect x="20" y="20" width="60" height="60" rx="10" ry="10" fill="gray" stroke="black" stroke-width="2"/>
+        <rect x="80" y="40" width="15" height="20" rx="4" ry="4" fill="darkgray" stroke="black" stroke-width="2"/>
+        <g class="bombaEmFuncionamento">
+          <g transform="translate(50,50)">
+            <path d="M0,-15 Q7,0 0,15 Q-7,0 0,-15" fill="black" stroke="black" stroke-width="1"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+</div>
+
+    </div>
+
+  </div>
 
   <div>
     <button onclick="addAcid()">Adicionar Ácido</button>
     <button onclick="addBase()">Adicionar Base</button>
+    <button onclick="heat()">Aquecer</button>
+    <button onclick="cool()">Resfriar</button>
   </div>
 
   <div id="ph-value">pH atual: 7.00</div>
+  <div id="temp-value">Temperatura atual: 20°C</div>
 
   <div class="config">
     <h2>Configurações</h2>
 
     <label for="idealPh">pH Ideal:</label>
     <input type="number" id="idealPh" value="7.0" step="0.01">
+
+    <label for="idealTemp">Temperatura Ideal (°C):</label>
+    <input type="number" id="idealTemp" value="25" step="0.1">
 
     <label for="acidSolutionPh">pH da Solução Ácida:</label>
     <input type="number" id="acidSolutionPh" value="3.0" step="0.01">
@@ -78,30 +160,53 @@
 
   <script>
     let ph = 7.0;
+    let temperature = 20.0;
 
     function updateDisplay() {
-        const phText = document.getElementById('ph-value');
-        phText.textContent = `pH atual: ${ph.toFixed(2)}`;
+  const phText = document.getElementById('ph-value');
+  phText.textContent = `pH atual: ${ph.toFixed(2)}`;
 
-        const tank = document.getElementById('tank');
-        const idealPh = parseFloat(document.getElementById('idealPh').value) || 7.0;
+  const tempText = document.getElementById('temp-value');
+  tempText.textContent = `Temperatura atual: ${temperature.toFixed(1)}°C`;
 
-        if (Math.abs(ph - idealPh) < 0.01) {
-            tank.style.background = "linear-gradient(to top, #0f0 50%, #fff 50%)";
-        } else if (ph < 7) {
-            const red = 255;
-            const green = Math.max(0, Math.floor(255 * (ph / 7))); 
-            const blue = Math.max(0, Math.floor(255 * (ph / 7)));  
-            tank.style.background = `linear-gradient(to top, rgb(${red}, ${green}, ${blue}) 50%, #fff 50%)`;
-        } else if (ph > 7) {
-            const blue = 255;
-            const red = Math.min(255, Math.floor(255 * ((ph - 7) / 7))); 
-            const green = 0; 
-            tank.style.background = `linear-gradient(to top, rgb(${red}, ${green}, ${blue}) 50%, #fff 50%)`;
-        } else {
-            tank.style.background = "linear-gradient(to top, #00f 50%, #fff 50%)";
-        }
-    }
+  const tank = document.getElementById('tank');
+  const idealPh = parseFloat(document.getElementById('idealPh').value) || 7.0;
+  const idealTemp = parseFloat(document.getElementById('idealTemp').value) || 25.0;
+
+  // Ajustar cor do tanque
+  if (Math.abs(ph - idealPh) < 0.01) {
+    tank.style.background = "linear-gradient(to top, #0f0 50%, #fff 50%)";
+  } else if (ph < 7) {
+    const red = 255;
+    const green = Math.max(0, Math.floor(255 * (ph / 7)));
+    const blue = Math.max(0, Math.floor(255 * (ph / 7)));
+    tank.style.background = `linear-gradient(to top, rgb(${red}, ${green}, ${blue}) 50%, #fff 50%)`;
+  } else if (ph > 7) {
+    const blue = 255;
+    const red = Math.min(255, Math.floor(255 * ((ph - 7) / 7)));
+    const green = 0;
+    tank.style.background = `linear-gradient(to top, rgb(${red}, ${green}, ${blue}) 50%, #fff 50%)`;
+  } else {
+    tank.style.background = "linear-gradient(to top, #00f 50%, #fff 50%)";
+  }
+
+  // Atualizar cor do aquecedor
+  const heaterBody = document.getElementById('heaterBody');
+  if (temperature < idealTemp) {
+    heaterBody.setAttribute('fill', 'red');
+  } else {
+    heaterBody.setAttribute('fill', 'orange');
+  }
+
+  // Ligar ou desligar o ventilador
+  const fanBlades = document.getElementById('fanBlades');
+  if (temperature > idealTemp) {
+    fanBlades.classList.add('rotating');
+  } else {
+    fanBlades.classList.remove('rotating');
+  }
+}
+
 
     function addAcid() {
       const acidPh = parseFloat(document.getElementById('acidSolutionPh').value) || 3.0;
@@ -120,6 +225,16 @@
       const influence = (basePh - 7) * (baseFlow / 100);
       ph += influence;
       if (ph > 14) ph = 14;
+      updateDisplay();
+    }
+
+    function heat() {
+      temperature += 0.5;
+      updateDisplay();
+    }
+
+    function cool() {
+      temperature -= 0.5;
       updateDisplay();
     }
 

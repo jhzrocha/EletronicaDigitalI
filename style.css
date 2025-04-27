@@ -1,66 +1,145 @@
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 20px;
-  }
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+#tank {
+  width: 200px;
+  height: 300px;
+  border: 2px solid #000;
+  position: relative;
+  background: linear-gradient(to top, #00f 50%, #fff 50%);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tank-area {
+  width: 100%;
+  max-width: 220px;
+  height: 320px;
+}
+
+.pump {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pump svg {
+  width: 100px;
+  height: 100px;
+}
+
+#fan {
+  margin-bottom: 10px;
+}
+
+.pump.right svg {
+  transform: scaleX(-1); /* Espelha a bomba da direita */
+}
+
+#ph-value, #temp-value {
+  font-size: 24px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px 5px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  background-color: #3498db;
+  color: white;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+.config {
+  margin: 20px auto;
+  max-width: 400px;
+  text-align: left;
+}
+
+.config label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.config input {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+  margin-top: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.bombaEmFuncionamento {
+  transform-origin: 50% 50%;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* RESPONSIVIDADE PARA CELULARES */
+@media (max-width: 600px) {
   .container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    margin-top: 20px;
-    gap: 60px;
-  }
-  #tank {
-    width: 200px;
-    height: 300px;
-    border: 2px solid #000;
-    position: relative;
-    background: linear-gradient(to top, #00f 50%, #fff 50%);
-  }
-  .pump {
-    width: 120px;
-    height: 120px;
-    display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    gap: 20px;
   }
+
+  #tank, .tank-area {
+    width: 150px;
+    height: 220px;
+  }
+
+  .pump {
+    width: 80px;
+    height: 80px;
+  }
+
   .pump svg {
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
   }
-  .pump.right svg {
-    transform: scaleX(-1); /* Espelha a bomba da direita */
+
+  #ph-value, #temp-value {
+    font-size: 20px;
   }
-  #ph-value {
-    font-size: 24px;
-    margin-top: 20px;
-  }
+
   button {
-    padding: 10px 20px;
-    margin: 10px;
-    font-size: 16px;
-    cursor: pointer;
+    width: 90%;
+    font-size: 18px;
+    padding: 12px;
+    margin: 5px auto;
   }
+
   .config {
-    margin: 20px auto;
-    max-width: 400px;
-    text-align: left;
+    max-width: 90%;
   }
-  .config label {
-    display: block;
-    margin-top: 10px;
-    font-weight: bold;
-  }
+
   .config input {
-    width: 100%;
-    padding: 5px;
-    font-size: 16px;
+    font-size: 18px;
   }
-  .bombaEmFuncionamento {
-    transform-origin: 50% 50%;
-    animation: spin 2s linear infinite;
-  }
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
+}
