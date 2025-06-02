@@ -1,3 +1,6 @@
+#include "htmlCreator.h"
+
+const char HTMLCreator::index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -358,4 +361,8 @@ function updateDisplay() {
   </script>
 
 </body>
-</html>
+</html>)rawliteral";
+
+const char* HTMLCreator::getHTMLPage() {
+  return index_html;
+}
